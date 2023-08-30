@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <omp.h>
 
  void prodAx(int m, int n, double * restrict A, double * restrict x,
    double * restrict b);
@@ -34,13 +34,23 @@
     for (j=0; j<n; j++)
       A[i*n+j] = rand()%13+1;
 
+
+  double start_time = omp_get_wtime();
+
+
   printf("Calculando el producto Ax para m = %d n = %d\n",m,n);
   (void) prodAx(m, n, A, x, b);
 
-  printf("\nb: \n");
-  for(j=0; j<n; j++)
-    printf("\t%0.0f ",b[j]);
-  printf("\n\n");
+  double end_time = omp_get_wtime();
+  double elapsed_time = end_time - start_time;
+
+  printf("Tiempo total: %f segundos\n", elapsed_time);
+
+  // printf("\nb: \n");
+  // for(j=0; j<n; j++)
+  //   printf("\t%0.0f ",b[j]);
+  // printf("\n\n");
+
 
   free(A);free(x);free(b);
 
